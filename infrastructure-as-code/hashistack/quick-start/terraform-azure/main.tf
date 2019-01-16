@@ -31,6 +31,102 @@ ${data.template_file.consul_auto_join.rendered}
 EOF
 }
 
+resource "azurerm_network_security_rule" "jumphost_http" {
+  name                        = "jumphost_http"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1000
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "80"
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_security_rule" "jumphost_https" {
+  name                        = "jumphost_https"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1001
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "443"
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_security_rule" "jumphost_tcp_4646" {
+  name                        = "jumphost_tcp_4646"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1002
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "4646"
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_security_rule" "jumphost_tcp_8080" {
+  name                        = "jumphost_tcp_8080"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1003
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "8080"
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_security_rule" "jumphost_tcp_8200" {
+  name                        = "jumphost_tcp_8200"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1004
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "8200"
+  destination_address_prefix = "*"
+}
+
+resource "azurerm_network_security_rule" "jumphost_tcp_8500" {
+  name                        = "jumphost_tcp_8500"
+  resource_group_name         = "${azurerm_resource_group.hashistack.name}"
+  network_security_group_name = "${module.network_azure.security_group_name}"
+
+  priority  = 1005
+  direction = "Inbound"
+  access    = "Allow"
+  protocol  = "Tcp"
+
+  source_address_prefix      = "*"
+  source_port_range          = "*"
+  destination_port_range     = "8500"
+  destination_address_prefix = "*"
+}
+
 module "hashistack_azure" {
   source                     = "git@github.com:hashicorp-modules/hashistack-azure.git//quick-start"
   name                       = "${var.name}"
