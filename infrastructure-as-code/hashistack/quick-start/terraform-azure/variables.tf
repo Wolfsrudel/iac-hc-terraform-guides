@@ -39,10 +39,32 @@ variable "admin_password" {
 # ---------------------------------------------------------------------------------------------------------------------
 # Azure Variables
 # ---------------------------------------------------------------------------------------------------------------------
+variable "azure_client_id" {
+  description = "TODO"
+}
+
+variable "azure_client_secret" {
+  description = "TODO"
+}
+
+variable "azure_subscription_id" {
+  description = "TODO"
+}
+
+variable "azure_tenant_id" {
+  description = "TODO"
+}
+
 variable "azure_region" {
   description = "The Azure Region to use for all resources (ex: eastus, westus)."
   type        = "string"
   default     = "eastus"
+}
+
+variable "azure_asg_initial_vm_count" {
+  description = "TODO"
+  type        = "string"
+  default     = "3"
 }
 
 variable "azure_os" {
@@ -62,10 +84,16 @@ variable "azure_vm_size" {
   default     = "Standard_DS1_V2"
 }
 
-variable "azure_vnet_cidr_block" {
+variable "azure_vnet_cidr" {
   description = "The public network CIDRs to add to the virtual network."
   type        = "string"
-  default     = "172.31.0.0/20"
+  default     = "172.31.0.0/16"
+}
+
+variable "azure_subnet_cidrs" {
+  description = "The public network CIDRs to add to the subnet."
+  type        = "list"
+  default     = ["172.31.0.0/20"]
 }
 
 # ---------------------------------------------------------------------------------------------------------------------

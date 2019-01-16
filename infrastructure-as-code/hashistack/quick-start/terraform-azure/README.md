@@ -23,7 +23,7 @@ There are many different ways to provision and configure an easily accessible qu
 
 ## Solution
 
-Provision a quick start HashiStack cluster in a private network with a jump host.
+Provision a quick start HashiStack cluster in a public network with a jump host.
 
 The Azure Quick Start HashiStack guide leverages the scripts in the [Guides Configuration Repo](https://github.com/hashicorp/guides-configuration) to do runtime configuration for the HashiStack. Although using `curl bash` at runtime is _not_ best practices, this makes it quick and easy to standup a HashiStack cluster with no external dependencies like pre-built images. This guide will also forgo setting up TLS/encryption on Consul, Vault, & Nomad for the sake of simplicity.
 

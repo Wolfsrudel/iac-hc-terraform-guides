@@ -78,3 +78,16 @@ data "template_file" "docker_install" {
 data "template_file" "java_install" {
   template = "${file("${path.module}/../../templates/install-java.sh.tpl")}"
 }
+
+data "template_file" "consul_auto_join" {
+  template = "${file("${path.module}/templates/consul-auto-join.sh.tpl")}"
+
+  vars = {
+    name                  = "${var.name}"
+    cluster_size          = "${var.azure_asg_initial_vm_count}"
+    azure_subscription_id = "${var.azure_subscription_id}"
+    azure_tenant_id       = "${var.azure_tenant_id}"
+    azure_client_id       = "${var.azure_client_id}"
+    azure_client_secret   = "${var.azure_client_secret}"
+  }
+}
