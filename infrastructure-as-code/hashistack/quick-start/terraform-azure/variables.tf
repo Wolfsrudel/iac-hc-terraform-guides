@@ -4,7 +4,6 @@
 variable "name" {
   description = "The name to use on all of the resources."
   type        = "string"
-  default     = "hashistack-azure-quick-start"
 }
 
 variable "provider" {

@@ -42,7 +42,7 @@ data "template_file" "nomad_install" {
 }
 
 data "template_file" "bastion_quick_start" {
-  template = "${file("${path.module}/../../templates/quick-start-bastion-systemd.sh.tpl")}"
+  template = "${file("${path.module}/templates/quick-start-azure-bastion-systemd.sh.tpl")}"
 
   vars = {
     name            = "${var.name}"
@@ -50,24 +50,34 @@ data "template_file" "bastion_quick_start" {
     local_ip_url    = "${var.local_ip_url}"
     consul_override = "${var.consul_client_config_override != "" ? true : false}"
     consul_config   = "${var.consul_client_config_override}"
+
+    azure_subscription_id = "${var.azure_subscription_id}"
+    azure_tenant_id       = "${var.azure_tenant_id}"
+    azure_client_id       = "${var.azure_client_id}"
+    azure_client_secret   = "${var.azure_client_secret}"
   }
 }
 
 data "template_file" "hashistack_quick_start" {
-  template = "${file("${path.module}/../../templates/quick-start-hashistack-systemd.sh.tpl")}"
+  template = "${file("${path.module}/templates/quick-start-azure-hashistack-systemd.sh.tpl")}"
 
   vars = {
     name             = "${var.name}"
     provider         = "${var.provider}"
     local_ip_url     = "${var.local_ip_url}"
-    consul_bootstrap = "${length(module.network_azure.jumphost_ips_public)}"
+    consul_bootstrap = "${length(module.network_azure.bastion_ips_public)}"
     consul_override  = "${var.consul_server_config_override != "" ? true : false}"
     consul_config    = "${var.consul_server_config_override}"
     vault_override   = "${var.vault_config_override != "" ? true : false}"
     vault_config     = "${var.vault_config_override}"
-    nomad_bootstrap  = "${length(module.network_azure.jumphost_ips_public)}"
+    nomad_bootstrap  = "${length(module.network_azure.bastion_ips_public)}"
     nomad_override   = "${var.nomad_config_override != "" ? true : false}"
     nomad_config     = "${var.nomad_config_override}"
+
+    azure_subscription_id = "${var.azure_subscription_id}"
+    azure_tenant_id       = "${var.azure_tenant_id}"
+    azure_client_id       = "${var.azure_client_id}"
+    azure_client_secret   = "${var.azure_client_secret}"
   }
 }
 
@@ -77,17 +87,4 @@ data "template_file" "docker_install" {
 
 data "template_file" "java_install" {
   template = "${file("${path.module}/../../templates/install-java.sh.tpl")}"
-}
-
-data "template_file" "consul_auto_join" {
-  template = "${file("${path.module}/templates/consul-auto-join.sh.tpl")}"
-
-  vars = {
-    name                  = "${var.name}"
-    cluster_size          = "${var.azure_asg_initial_vm_count}"
-    azure_subscription_id = "${var.azure_subscription_id}"
-    azure_tenant_id       = "${var.azure_tenant_id}"
-    azure_client_id       = "${var.azure_client_id}"
-    azure_client_secret   = "${var.azure_client_secret}"
-  }
 }

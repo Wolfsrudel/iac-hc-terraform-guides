@@ -14,8 +14,10 @@ module "network_azure" {
   environment      = "${var.environment}"
   location         = "${var.azure_region}"
   os               = "${var.azure_os}"
+  admin_username   = "${var.admin_username}"
+  admin_password   = "${var.admin_password}"
   public_key_data  = "${module.ssh_key.public_key_openssh}"
-  jumphost_vm_size = "${var.azure_vm_size}"
+  bastion_vm_size = "${var.azure_vm_size}"
   vnet_cidr        = "${var.azure_vnet_cidr}"
   subnet_cidrs     = ["${var.azure_subnet_cidrs}"]
 
@@ -24,15 +26,14 @@ ${data.template_file.base_install.rendered}
 ${data.template_file.consul_install.rendered}
 ${data.template_file.vault_install.rendered}
 ${data.template_file.nomad_install.rendered}
-${data.template_file.hashistack_quick_start.rendered}
+${data.template_file.bastion_quick_start.rendered}
 ${data.template_file.java_install.rendered}
 ${data.template_file.docker_install.rendered}
-${data.template_file.consul_auto_join.rendered}
 EOF
 }
 
-resource "azurerm_network_security_rule" "jumphost_http" {
-  name                        = "jumphost_http"
+resource "azurerm_network_security_rule" "bastion_http" {
+  name                        = "bastion_http"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -47,8 +48,8 @@ resource "azurerm_network_security_rule" "jumphost_http" {
   destination_address_prefix = "*"
 }
 
-resource "azurerm_network_security_rule" "jumphost_https" {
-  name                        = "jumphost_https"
+resource "azurerm_network_security_rule" "bastion_https" {
+  name                        = "bastion_https"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -63,8 +64,8 @@ resource "azurerm_network_security_rule" "jumphost_https" {
   destination_address_prefix = "*"
 }
 
-resource "azurerm_network_security_rule" "jumphost_tcp_4646" {
-  name                        = "jumphost_tcp_4646"
+resource "azurerm_network_security_rule" "bastion_tcp_4646" {
+  name                        = "bastion_tcp_4646"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -79,8 +80,8 @@ resource "azurerm_network_security_rule" "jumphost_tcp_4646" {
   destination_address_prefix = "*"
 }
 
-resource "azurerm_network_security_rule" "jumphost_tcp_8080" {
-  name                        = "jumphost_tcp_8080"
+resource "azurerm_network_security_rule" "bastion_tcp_8080" {
+  name                        = "bastion_tcp_8080"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -95,8 +96,8 @@ resource "azurerm_network_security_rule" "jumphost_tcp_8080" {
   destination_address_prefix = "*"
 }
 
-resource "azurerm_network_security_rule" "jumphost_tcp_8200" {
-  name                        = "jumphost_tcp_8200"
+resource "azurerm_network_security_rule" "bastion_tcp_8200" {
+  name                        = "bastion_tcp_8200"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -111,8 +112,8 @@ resource "azurerm_network_security_rule" "jumphost_tcp_8200" {
   destination_address_prefix = "*"
 }
 
-resource "azurerm_network_security_rule" "jumphost_tcp_8500" {
-  name                        = "jumphost_tcp_8500"
+resource "azurerm_network_security_rule" "bastion_tcp_8500" {
+  name                        = "bastion_tcp_8500"
   resource_group_name         = "${azurerm_resource_group.hashistack.name}"
   network_security_group_name = "${module.network_azure.security_group_name}"
 
@@ -150,6 +151,5 @@ ${data.template_file.nomad_install.rendered}
 ${data.template_file.hashistack_quick_start.rendered}
 ${data.template_file.java_install.rendered}
 ${data.template_file.docker_install.rendered}
-${data.template_file.consul_auto_join.rendered}
 EOF
 }
